@@ -1,4 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
 @Injectable()
@@ -6,8 +7,8 @@ export class GeminiService {
   private readonly logger = new Logger(GeminiService.name);
   private readonly model;
 
-  constructor() {
-    const apiKey = 'AIzaSyAOMOOGrP9emnRHOiUSoltjfdYOZ_96msY'
+  constructor(private configService: ConfigService) {
+    const apiKey = this.configService.get<string>('GOOGLE_API_KEY');
     if (!apiKey) {
       throw new Error('API key is not defined');
     }
